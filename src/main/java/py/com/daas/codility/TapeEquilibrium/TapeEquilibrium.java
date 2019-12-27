@@ -7,23 +7,20 @@ public class TapeEquilibrium {
 
     public static int solution(int[] A) {
         int   N    = A.length;//must have least two elements
-        int[] tmpA = new int[N - 1];
-        tmpA[tmpA.length-1] = A[N - 1];
-        int leftSum       = A[0];
-        int rigthSum      = tmpA[tmpA.length-1];
-        int difference    = 0;
+        int leftSum       = 0;
+        int rigthSum      = A[0];
         int minDifference = Integer.MAX_VALUE;
-        int j             = 0;
-        for (int i = 1; i < (N - 1); i++) {
-            j = (N - 1) - i;
+
+        for (int i = 1; i < N; i++) {
             leftSum += A[i];
-            rigthSum += A[j];
-            if (i >= j) {
-                minDifference = getDifference(minDifference, rigthSum, A[i - 1]);
-                minDifference = getDifference(minDifference, leftSum, tmpA[i]);
-            }
-            A[i] = leftSum;
-            tmpA[j-1] = rigthSum;
+        }
+
+        minDifference = getDifference(minDifference, leftSum, rigthSum);
+
+        for (int i = 1; i < N - 1; i++) {
+            rigthSum += A[i];
+            leftSum -= A[i];
+            minDifference = getDifference(minDifference, leftSum, rigthSum);
         }
 
         return minDifference;
