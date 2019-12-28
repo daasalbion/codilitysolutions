@@ -6,26 +6,30 @@ package py.com.daas.codility.TapeEquilibrium;
 public class TapeEquilibrium {
 
     public static int solution(int[] A) {
-        int N = A.length;
-        int leftSum = A[0];
-        int rigthSum = A[N-1];
-        int difference = 0;
-        int j = 0;
+        int   N    = A.length;//must have least two elements
+        int leftSum       = 0;
+        int rigthSum      = A[0];
         int minDifference = Integer.MAX_VALUE;
-        for (int i = 1; i < (N-1); i++) {
-            j = (N-1)-i;
+
+        for (int i = 1; i < N; i++) {
             leftSum += A[i];
-            rigthSum += A[j];
-            if (i > j) {
-                difference = Math.abs(A[j] - A[i]);
-            } else if (i == j) {
-                difference = Math.abs(leftSum - rigthSum);
-            }
-            if (difference < minDifference) {
-                minDifference = difference;
-            }
-            A[i] = leftSum;
-            A[j] = rigthSum;
+        }
+
+        minDifference = getDifference(minDifference, leftSum, rigthSum);
+
+        for (int i = 1; i < N - 1; i++) {
+            rigthSum += A[i];
+            leftSum -= A[i];
+            minDifference = getDifference(minDifference, leftSum, rigthSum);
+        }
+
+        return minDifference;
+    }
+
+    public static int getDifference(int minDifference, int a, int b) {
+        int difference = Math.abs(a - b);
+        if (difference < minDifference) {
+            minDifference = difference;
         }
         return minDifference;
     }
